@@ -1,0 +1,21 @@
+# Secrets (LLM API keys live only in server env vars)
+.env
+.env.*
+
+# Go
+*.exe
+*.out
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# e2e
+e2e/node_modules/
+e2e/shots/
