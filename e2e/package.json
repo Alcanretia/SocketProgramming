@@ -1,0 +1,7 @@
+{
+  "name": "e2e",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node e2e.mjs" },
+  "dependencies": { "playwright-core": "^1.50.0" }
+}

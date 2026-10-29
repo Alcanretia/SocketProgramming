@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>WebSocket echo test</title>
+<h3>WebSocket echo test</h3>
+<p>Open DevTools → Network → WS (or filter "ws") and look at the <code>/ws</code> request:
+the request has an <code>Upgrade: websocket</code> header and the response is <code>101 Switching Protocols</code>.</p>
+<input id="msg" placeholder="type a message" autofocus>
+<button id="send">Send</button>
+<pre id="log"></pre>
+<script>
+  const log = document.getElementById("log");
+  const add = (s) => { log.textContent += s + "\n"; };
+  // Plain browser WebSocket API. ws:// because this is plain HTTP; use wss:// under HTTPS.
+  const ws = new WebSocket("ws://" + location.host + "/ws");
+  ws.onopen = () => add("[open]");
+  ws.onmessage = (e) => add("echo: " + e.data);
+  ws.onclose = () => add("[closed]");
+  const send = () => {
+    const box = document.getElementById("msg");
+    if (box.value) { ws.send(box.value); box.value = ""; }
+  };
+  document.getElementById("send").onclick = send;
+  document.getElementById("msg").onkeydown = (e) => { if (e.key === "Enter") send(); };
+</script>
