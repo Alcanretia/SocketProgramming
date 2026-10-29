@@ -1,3 +1,6 @@
+## Heads-up for P1
+While building the app I (P4) also wrote **your** part with an AI tool, without asking you first: the hub and per-client read/write loops (`server/hub.go`, `server/client.go`), and on the browser side the connection manager, store, notification service and shared `ChatRoom` (`client-web/src/socket/`, `components/shared/`). Sorry; it was not meant to take your part away. It is **not done for you** until you have read it, can explain it, and I have reviewed your explanation. Change anything you disagree with. Your notes file for this PR: `docs/reviews/p1-connection-core.md`. D4 (hub concurrency design) is yours to confirm or overturn.
+
 ## What this PR does
 P1's review and learning changes for the connection core: <!-- e.g. my Phase 1 and Phase 2 exercises, fixes found while reading hub.go, learning-log entry -->
 

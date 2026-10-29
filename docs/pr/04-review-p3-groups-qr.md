@@ -1,3 +1,6 @@
+## Heads-up for P3
+While building the app I (P4) also wrote **your** part with an AI tool, without asking you first: create / list / join groups with member lists, group message fan-out, invite tokens, the group panel, the QR code and the join-confirmation dialog (`server/hub.go`, `client-web/src/features/groups/`). I also wrote the multi-client browser test (`e2e/`) that was yours to write. Sorry; it was not meant to take your part away. It is **not done for you** until you have read it, can explain it, scanned the QR with a real phone, and P2 has reviewed your explanation. The group rules (what happens when a member disconnects, whether empty groups disappear, invite expiry) are my proposals; you decide. Your notes file for this PR: `docs/reviews/p3-groups-qr.md`.
+
 ## What this PR does
 P3's review and learning changes for groups and QR invites: <!-- e.g. my Phase 1 exercise, group rules I decided, real phone scan result, new e2e cases, learning-log entry -->
 

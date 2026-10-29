@@ -1,3 +1,6 @@
+## Heads-up
+This is my own PR. Besides my own part (AI summary, unread panel, running guide, demo script) I also wrote the parts that belong to P1, P2 and P3 (see their PRs and README Section 0.7). Even my own part was written with an AI tool, so I still owe the explain-backs below. Notes file: `docs/reviews/p4-ai-deploy.md`.
+
 ## What this PR does
 P4's learning, live-test and deployment changes: <!-- e.g. explain-back answers in the learning log, result of the first live AI summary, multi-computer test notes, slides, demo rehearsal fixes -->
 

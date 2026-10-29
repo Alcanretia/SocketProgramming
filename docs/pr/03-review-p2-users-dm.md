@@ -1,3 +1,6 @@
+## Heads-up for P2
+While building the app I (P4) also wrote **your** part with an AI tool, without asking you first: name validation and uniqueness, the user list, DM routing, sticker validation and the eight sticker SVGs (`server/hub.go`, `server/protocol.go`, `server/stickers.go`, `client-web/src/features/users-dm/`). I also wrote the first draft of `docs/PROTOCOL.md`, which you are supposed to keep. Sorry; it was not meant to take your part away. It is **not done for you** until you have read it, can explain it, and P1 has reviewed your explanation. The protocol is a proposal until you acknowledge it: change anything you disagree with (doc first, then code). Your notes file for this PR: `docs/reviews/p2-users-dm.md`.
+
 ## What this PR does
 P2's review and learning changes for identity, DMs and stickers: <!-- e.g. my Phase 1 exercise, answers to PROTOCOL.md open questions, fixes, learning-log entry -->
 

@@ -1,3 +1,15 @@
+## Heads-up for P1, P2 and P3 (please read first)
+While building this I (P4) also wrote the parts of the server and client that belong to **you**, using an AI tool, and I did it without asking you first. The plan says each person builds and explains their own module, and this skips that. Sorry about that; it was not meant to take your part away.
+
+What it means for you:
+- Your area already has code. You did not write it, so it is **not done** for you yet. I did not mark any phase as ✅.
+- Please read your part, rewrite or change anything you disagree with, and answer the explain-back in your own words. If you change a message type or field, change `docs/PROTOCOL.md` first.
+- Exactly what was written for whom is in README Section 0.7. Your own PR (draft, with a notes file for you to fill in) is linked below.
+  - P1: connection core, notifications (hub, pumps, `client-web/src/socket/`)
+  - P2: names, DMs, stickers, **and the `PROTOCOL.md` you are supposed to keep**
+  - P3: groups, QR invites, **and the `e2e/` test script that was yours**
+- The decisions in `docs/DECISIONS.md` (D1 to D9) are proposals for the team, not agreed. D4 (hub design) is P1's call and D5 (unread tracking) is for P1 and P4 together.
+
 ## What this PR does
 Adds the whole first working version of the chat app, split into 13 commits by area so each owner can review their own part: raw-TCP and WebSocket exercises, the Go chat server (hub, DMs, groups, invites, stickers, unread, AI summary), the React client, a multi-client browser test, and the docs (protocol, decisions, architecture, running guide, demo script, next steps).
 
