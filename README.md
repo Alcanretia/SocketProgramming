@@ -100,6 +100,28 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | 2026-10-29 | 2 | **P4 (with an AI helper) built beyond P4's own scope:** the whole chat server (`server/*.go`: hub, DM, groups, invites, stickers, unread, AI summary), the whole React app (`client-web/`, all four feature folders), Go tests, an e2e browser test (`e2e/`), and docs (`ARCHITECTURE`, `RUNNING`, `DEMO_SCRIPT`). All tests pass on one computer. This bypasses the "each person builds and explains their own module" rule, so P1 to P3 must read, review and explain their parts before they count as done | Team review and acknowledgement; API key for the live AI test; multi-computer run |
 | 2026-10-29 | 1 | P4: Phase 1 worked examples (`server/phase1/echo`, `hub`, `client`), tested with 2 to 3 clients. P4 then drafted Phase 2 ahead: `server/phase2/wsecho` (test passes), `PROTOCOL.md` DRAFT v0, `DECISIONS.md` | Team ack of protocol + decisions; P1 to P3 do Phase 1; P4 explain-backs |
 
+### 0.7 Work done on teammates' behalf (read this, P1 to P3)
+
+P4 built the whole first version with an AI tool, so **code in your area already exists and you did not write it**. It is on branch `feature/app-p4-initial` (13 commits, split by area). Nothing below counts as "done" for you until you have read it, can explain it, and a non-author reviewed it. You may rewrite any of it; if you change a message type or field, change `docs/PROTOCOL.md` first.
+
+| Owner | What was written or changed for them | Where | What the owner should do |
+|---|---|---|---|
+| **P1** Connection core | Hub (one owner goroutine + event channel), per-client read/write pumps, slow-client drop, ping/pong, size limit, WebSocket upgrade; browser connection with reconnect and re-register, state store, notification service with in-app fallback, shared `ChatRoom`, `NotificationSetting`, `roomInfo` | `server/hub.go`, `server/client.go`, `server/main.go`, `client-web/src/socket/`, `client-web/src/components/shared/` | Do Phase 1 and 2 yourself, read these files, pass the Phase 3 explain-back, test OS notifications |
+| **P2** Users, DMs, stickers | Name validation and uniqueness, `user_list` broadcast, DM routing and room ids, sticker validation and the 8 original SVG stickers, name screen, user list, sticker picker. **Also wrote `docs/PROTOCOL.md` (you are the keeper)** | `onRegister`, `onDM`, `validContent` in `server/hub.go` and `server/protocol.go`, `server/stickers.go`, `client-web/src/features/users-dm/`, `client-web/public/stickers/`, `docs/PROTOCOL.md` | Read, answer the open questions in `PROTOCOL.md` section 5, acknowledge or change it, pass the Phase 4 and 5 explain-backs |
+| **P3** Groups, QR | Create / list / join groups with member lists, group fan-out, disconnect rules, invite tokens and `invite_info`, group panel, QR code, join-confirmation dialog. **Also wrote `e2e/` (your "multi-client test script")** | `onCreateGroup` to `onInviteInfo` in `server/hub.go`, `client-web/src/features/groups/`, `e2e/` | Read, decide the group rules, scan the QR with a real phone, extend `e2e/`, pass the Phase 6 explain-back |
+| **P4** (own scope) | AI summary (Anthropic SDK call, timeout, graceful errors), unread list and summary card, running guide, demo script, architecture doc | `server/summary.go`, `client-web/src/features/ai/`, `docs/RUNNING.md`, `docs/DEMO_SCRIPT.md`, `docs/ARCHITECTURE.md` | Live-test with an API key, multi-computer run, slides, explain-backs |
+| **Shared** | Tests for R3 to R11, stickers, invites, unread and summary failures; `.gitignore`; Go module; decisions D1 to D9; per-person checklist; PR templates | `server/hub_test.go`, `.gitignore`, `server/go.mod`, `docs/DECISIONS.md`, `docs/NEXT_STEPS.md`, `.github/`, `docs/pr/` | Everyone: acknowledge decisions D1 to D9 |
+
+**Decisions made for the team that you may overturn:** D1 to D9 in `docs/DECISIONS.md`. Two of them were supposed to be agreed first: D4 (hub concurrency design, P1 owns it) and D5 (unread tracking, P1 and P4 agree).
+
+**Edits made to this workflow file itself** (the rules in Sections 1.1 to 1.6, 1.8, 2, 3, 4, 7, 8 and 9 were not changed):
+- Added Section 0 (this tracker) and this subsection.
+- "How to use this file": the agent opener now says `README.md`.
+- Section 1.7 (session routine): agents now read Section 0 at the start and update it at the end.
+- Phase sections: tasks, "Done when" and explain-back lines became checkboxes; each phase got a `Status:` line; Phase 1 got a per-person table; the Phase 2 protocol worksheet got a ✔ column; Section 6 got a "Done" column.
+
+**What this changes about the plan:** the review pairing in Section 3 is no longer independent for the code that P4 wrote (for example P4 can no longer be the independent reviewer of P3's groups). Every phase from 3 to 7 is 🟡 instead of ✅ for that reason.
+
 ---
 
 ## How to use this file
