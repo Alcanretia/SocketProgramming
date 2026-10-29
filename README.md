@@ -10,7 +10,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 
 > **Last updated:** 2026-10-29
 > **Current phase:** the whole app (Phases 2 to 7) is **built and auto-tested by P4 with an AI helper**, ahead of the team. Learning/review status is behind the code: nobody has done the explain-backs, and P1 to P3 have not read it yet.
-> **Next up (needs people, in this order):**
+> **Next up (needs people, in this order; per-person checklists are in `docs/NEXT_STEPS.md`):**
 > 1. Team reads and acknowledges `docs/PROTOCOL.md` (DRAFT v0.1) and `docs/DECISIONS.md` (D1 to D9). Change them if you disagree, then change the code.
 > 2. P1 to P3 do the Phase 1 exercises themselves **before** reading `server/phase1/`, then every member reads `docs/ARCHITECTURE.md` and answers the explain-backs.
 > 3. Provide an `ANTHROPIC_API_KEY` and try the real AI summary once (never run live; only a fake summarizer is tested).
