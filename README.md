@@ -8,7 +8,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 
 ## 0. Progress Tracker (update this every session)
 
-> **Last updated:** 2026-10-29
+> **Last updated:** 2026-11-01
 > **Current phase:** the whole app (Phases 2 to 7) is **built and auto-tested by P4 with an AI helper**, ahead of the team. Learning/review status is behind the code: nobody has done the explain-backs, and P1 to P3 have not read it yet.
 > **Next up (needs people, in this order; per-person checklists are in `docs/NEXT_STEPS.md`):**
 > 1. Team reads and acknowledges `docs/PROTOCOL.md` (DRAFT v0.1) and `docs/DECISIONS.md` (D1 to D9). Change them if you disagree, then change the code.
@@ -29,8 +29,8 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | 1 | Socket fundamentals (TCP echo, 2 clients, forwarding) | All | ⬜ | | |
 | 2 | WebSocket basics + protocol contract (`PROTOCOL.md`) | P1 leads, all | 🟡 | | Draft by P4: WS echo server + tested handshake, `PROTOCOL.md` DRAFT v0, `DECISIONS.md`. Needs team ack. Frontend agents start after this |
 | 3 | Connection core: client and hub | P1 | 🟡 | | Code done: `server/hub.go`, `client.go` (one owner goroutine, read/write pumps). Needs P1 to read it and pass the explain-back |
-| 4 | Identity and user list (R3, R4) | P2 | 🟡 | | Code + tests done (case-insensitive, simultaneous registration). Needs P2 review |
-| 5 | Direct messages and rooms (R5, R7) | P2 | 🟡 | | Code + tests + 3-tab browser test done. Needs P2 review |
+| 4 | Identity and user list (R3, R4) | P2 | 🟡 | | Code + tests + P2 explain-back done (`docs/reviews/p2-users-dm.md`). Awaiting P1 reviewer check |
+| 5 | Direct messages and rooms (R5, R7) | P2 | 🟡 | | Code + tests + P2 explain-back done (`docs/reviews/p2-users-dm.md`). Awaiting P1/P3 reviewer check |
 | 6 | Groups (R8 to R11) | P3 | 🟡 | | Code + tests + 3-tab browser test done. Needs P3 review |
 | 7 | Special features (Part 3) | one owner each | 🟡 | | F2, F3, F4 built and tested. F1 built; live Claude call **not** tested (no API key) |
 | 8 | Multi-computer test + R1 | P1 + P4 | ⬜ | | Blocked: needs 2+ physical computers (see `docs/RUNNING.md`) |
@@ -66,7 +66,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | Person | Role | Current task | Status |
 |---|---|---|---|
 | P1 | Connection Core | Do Phase 1 yourself, then read `server/hub.go`, `client.go`, `client-web/src/socket/`; notifications (F4) | ⬜ |
-| P2 | Users, DMs, Stickers | Do Phase 1 yourself, then read `onRegister`, `onDM`, stickers; own `PROTOCOL.md` | ⬜ |
+| P2 | Users, DMs, Stickers | Phase 1, 4, 5, 7 (F3) explain-backs and `PROTOCOL.md` review done; awaiting P1 PR review | 🟡 |
 | P3 | Groups + QR Invite | Do Phase 1 yourself, then read the group and invite handlers; own `e2e/` | ⬜ |
 | P4 | AI + Deployment | Phase 1: task 1 ✅; tasks 2 and 3 built via worked examples, explain-back pending | 🟡 |
 
@@ -99,6 +99,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | 2026-10-29 | 0 | Repo created, workflow written into README, folders + `.gitignore` + docs stubs scaffolded (Go 1.26.5 installed) | Start Phase 1 |
 | 2026-10-29 | 2 | **P4 (with an AI helper) built beyond P4's own scope:** the whole chat server (`server/*.go`: hub, DM, groups, invites, stickers, unread, AI summary), the whole React app (`client-web/`, all four feature folders), Go tests, an e2e browser test (`e2e/`), and docs (`ARCHITECTURE`, `RUNNING`, `DEMO_SCRIPT`). All tests pass on one computer. This bypasses the "each person builds and explains their own module" rule, so P1 to P3 must read, review and explain their parts before they count as done | Team review and acknowledgement; API key for the live AI test; multi-computer run |
 | 2026-10-29 | 1 | P4: Phase 1 worked examples (`server/phase1/echo`, `hub`, `client`), tested with 2 to 3 clients. P4 then drafted Phase 2 ahead: `server/phase2/wsecho` (test passes), `PROTOCOL.md` DRAFT v0, `DECISIONS.md` | Team ack of protocol + decisions; P1 to P3 do Phase 1; P4 explain-backs |
+| 2026-11-01 | 3 | P2: Completed Phase 1 & 2 explain-backs, reviewed `onRegister`, `onDM`, `validContent`, `stickers.go`, and `features/users-dm/`, answered open questions & acknowledged `PROTOCOL.md` and `DECISIONS.md`, added tricky-name test cases in `hub_test.go`, and filled `docs/reviews/p2-users-dm.md` | P1 reviews PR #3; P2 reviews P3's part |
 
 ### 0.7 Work done on teammates' behalf (read this, P1 to P3)
 
@@ -283,7 +284,7 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 | Member | Task 1 | Task 2 | Task 3 |
 |---|---|---|---|
 | P1 | ⬜ | ⬜ | ⬜ |
-| P2 | ⬜ | ⬜ | ⬜ |
+| P2 | ✅ | ✅ | ✅ |
 | P3 | ⬜ | ⬜ | ⬜ |
 | P4 | ✅ | 🟡 | 🟡 |
 
@@ -301,7 +302,7 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 - [ ] Everyone can draw the lifecycle of a TCP connection (listen, accept, read, write, close) from memory.
 
 **Explain-back:** *"Why does a chat server need one goroutine per connection (or something equivalent)?"*
-- [ ] P1 · [ ] P2 · [ ] P3 · [ ] P4
+- [ ] P1 · [x] P2 · [ ] P3 · [ ] P4
 
 ---
 
@@ -356,7 +357,7 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 - [ ] Decisions are logged
 
 **Explain-back:** *"What is the difference between an HTTP request and a WebSocket connection? Where does one turn into the other?"*
-- [ ] P1 · [ ] P2 · [ ] P3 · [ ] P4
+- [ ] P1 · [x] P2 · [ ] P3 · [ ] P4
 
 ---
 
@@ -409,13 +410,13 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 **Hints:** think of registration as a request/response pair; a broadcast is "loop over clients and queue a message to each".
 
 **Done when**
-- [ ] Names can't collide (R3)
-- [ ] Every client sees every name including its own (R4)
-- [ ] The list updates live on join and leave
+- [x] Names can't collide (R3)
+- [x] Every client sees every name including its own (R4)
+- [x] The list updates live on join and leave
 - [ ] Reviewed by a non-author (P1 reviews P2)
 
 **Explain-back:** *"How does the server guarantee uniqueness even with two simultaneous registrations?"*
-- [ ] Answered by P2 · [ ] Others can also answer
+- [x] Answered by P2 · [ ] Others can also answer
 
 ---
 
@@ -437,14 +438,14 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 **Hints:** prove privacy with a third tab (C) that must never receive an A↔B message; make this a repeatable test.
 
 **Done when**
-- [ ] A↔B messages appear only for A and B (R7)
-- [ ] Each DM has its own room in the UI (R5, R6)
-- [ ] Errors for missing users are handled gracefully
-- [ ] Third-tab privacy test is repeatable
+- [x] A↔B messages appear only for A and B (R7)
+- [x] Each DM has its own room in the UI (R5, R6)
+- [x] Errors for missing users are handled gracefully
+- [x] Third-tab privacy test is repeatable
 - [ ] Reviewed by a non-author (P3 reviews P2)
 
 **Explain-back:** *"Show me the exact line where a message is sent to only one person."*
-- [ ] Answered by P2 · [ ] Others can also answer
+- [x] Answered by P2 · [ ] Others can also answer
 
 ---
 
@@ -551,13 +552,13 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 **Hints:** sticker pack = a small list of IDs and image files shipped with the frontend. Picker UI sits next to the chat box in `ChatRoom`.
 
 **Done when**
-- [ ] A sticker sent in a DM or group is visible only to the correct people
-- [ ] It renders properly
-- [ ] Invalid IDs are rejected by the server
-- [ ] Sticker assets are open-licensed or self-made, with credit
+- [x] A sticker sent in a DM or group is visible only to the correct people
+- [x] It renders properly
+- [x] Invalid IDs are rejected by the server
+- [x] Sticker assets are open-licensed or self-made, with credit
 
 **Explain-back:** *"What exactly travels over the WebSocket when I send a sticker?"*
-- [ ] Answered by P2
+- [x] Answered by P2
 
 #### F4: Notification when messages are received (P1)
 

@@ -168,6 +168,19 @@ func TestRegisterAndUserList(t *testing.T) {
 	if got := bob.expect("register_error").str(t, "code"); got != "invalid" {
 		t.Fatalf("want invalid for long name, got %s", got)
 	}
+	bob.send("register", map[string]any{"name": strings.Repeat("a", 500)})
+	if got := bob.expect("register_error").str(t, "code"); got != "invalid" {
+		t.Fatalf("want invalid for 500-char name, got %s", got)
+	}
+	bob.send("register", map[string]any{"name": "bad\x00name"})
+	if got := bob.expect("register_error").str(t, "code"); got != "invalid" {
+		t.Fatalf("want invalid for control character, got %s", got)
+	}
+
+	// Tricky valid names: unicode (Thai) and emoji within 20 runes are allowed.
+	thai := dial(t, url)
+	thai.register("สมชาย🎉")
+	thai.conn.Close()
 
 	bob.register("Bob")
 	// Live update on join (both see both names).

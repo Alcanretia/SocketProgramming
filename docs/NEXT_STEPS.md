@@ -22,11 +22,11 @@ Commit your learning-log entry, your fixes and your review notes on your branch,
 - [ ] Review P2's part.
 
 ## P2: Users, DMs, stickers
-- [ ] Phase 1 yourself, then read `onRegister`, `onDM`, `validContent`, `stickers.go`.
-- [ ] Own `docs/PROTOCOL.md`: answer its open questions (history? unread retention? mentions?) and mark it acknowledged only when you agree. Any change goes into the doc first, then the code and `client-web/src/socket/types.ts`.
-- [ ] Try to break names: unicode, emoji, 500 characters, spaces only, same name at the same instant (a test exists; understand why it passes).
-- [ ] Explain-back: *how uniqueness holds under simultaneous registration*; *show the line where a DM goes to only one person*; *what travels over the socket for a sticker*.
-- [ ] Review the sticker artwork (replace with your own if you want) and keep the id list in `server/stickers.go` and `client-web/src/features/users-dm/stickers.tsx` in sync (`TestStickerAssetsExist` checks the files).
+- [x] Phase 1 yourself, then read `onRegister`, `onDM`, `validContent`, `stickers.go`.
+- [x] Own `docs/PROTOCOL.md`: answer its open questions (history? unread retention? mentions?) and mark it acknowledged only when you agree. Any change goes into the doc first, then the code and `client-web/src/socket/types.ts`.
+- [x] Try to break names: unicode, emoji, 500 characters, spaces only, same name at the same instant (a test exists; understand why it passes).
+- [x] Explain-back: *how uniqueness holds under simultaneous registration*; *show the line where a DM goes to only one person*; *what travels over the socket for a sticker*.
+- [x] Review the sticker artwork (replace with your own if you want) and keep the id list in `server/stickers.go` and `client-web/src/features/users-dm/stickers.tsx` in sync (`TestStickerAssetsExist` checks the files).
 - [ ] Review P3's part.
 
 ## P3: Groups and QR

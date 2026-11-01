@@ -152,15 +152,20 @@ server → carol : nothing
 
 ## 5. Open questions for the team
 
-- [ ] Message history: is history stored on the server and replayed on join, or does a client only see messages received while online? (This draft assumes **no history**; the AI summary then covers only messages the server still holds as unread.)
-- [ ] Unread counts are dropped on disconnect in v0.1. Is that acceptable, or should they survive a short reconnect?
-- [ ] Mentions (`@name`) as a notification trigger: in or out of scope?
-- [ ] Should the AI also be a chat bot user, or summary only?
-- [ ] `rate_limited`: do we implement it?
+- [x] Message history: is history stored on the server and replayed on join, or does a client only see messages received while online? (This draft assumes **no history**; the AI summary then covers only messages the server still holds as unread.)
+  - **P2 (keeper):** Agreed — no server-side history replay on join. Messages only exist for online recipients, while the server holds up to the newest 200 unread messages per room strictly for the AI summary (`maxUnreadKept = 200`).
+- [x] Unread counts are dropped on disconnect in v0.1. Is that acceptable, or should they survive a short reconnect?
+  - **P2 (keeper):** Acceptable and safer. Because there is no authentication, dropping unread state on disconnect guarantees that a new user claiming a freed name can never read or summarize the previous owner's unread messages.
+- [x] Mentions (`@name`) as a notification trigger: in or out of scope?
+  - **P2 (keeper):** Out of scope for v0.1. Any DM or group message to a room the user is not actively viewing already triggers notifications (F4).
+- [x] Should the AI also be a chat bot user, or summary only?
+  - **P2 (keeper):** Summary only (`summarize_request` → `summary_result` / `summary_error`). This satisfies F1 cleanly without complicating `user_list` (R4).
+- [x] `rate_limited`: do we implement it?
+  - **P2 (keeper):** Yes, kept as implemented (`c.summarizing` allows at most one in-flight `summarize_request` per client at a time).
 
 ## 6. Team acknowledgement (required before coding against this)
 
 - [ ] P1 acknowledged
-- [ ] P2 acknowledged (keeper)
+- [x] P2 acknowledged (keeper)
 - [ ] P3 acknowledged
 - [ ] P4 acknowledged

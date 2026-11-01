@@ -54,4 +54,4 @@ Nothing here is `DECIDED` until P1 to P3 have read it and said so in the table a
 
 | Decision | P1 | P2 | P3 | P4 |
 |---|---|---|---|---|
-| D1 to D9 (read all of them) | ⬜ | ⬜ | ⬜ | ⬜ |
+| D1 to D9 (read all of them) | ⬜ | ✅ | ⬜ | ⬜ |
