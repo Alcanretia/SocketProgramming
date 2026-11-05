@@ -2,7 +2,7 @@
 
 Single source of truth for message types and fields. Keeper: P2.
 
-> **STATUS: DRAFT v0.1, proposed by P4 (with an AI mentor). NOT yet acknowledged by the team.**
+> **STATUS: DRAFT v0.1, proposed by P4 (with an AI mentor). Acknowledged by P2 (keeper); awaiting P1, P3, P4.**
 > v0.1 matches what is actually implemented in `server/` (Go) and `client-web/src/socket/` (TypeScript);
 > `server/hub_test.go` tests it. Because the team has not agreed yet, treat every rule here as a proposal:
 > P1 to P3 must read it, change what they disagree with (and then the code), and tick the
@@ -150,17 +150,17 @@ server → bob   : (the same delivered message)
 server → carol : nothing
 ```
 
-## 5. Open questions for the team
+## 5. Open questions for the team (P2 keeper answers)
 
-- [ ] Message history: is history stored on the server and replayed on join, or does a client only see messages received while online? (This draft assumes **no history**; the AI summary then covers only messages the server still holds as unread.)
-- [ ] Unread counts are dropped on disconnect in v0.1. Is that acceptable, or should they survive a short reconnect?
-- [ ] Mentions (`@name`) as a notification trigger: in or out of scope?
-- [ ] Should the AI also be a chat bot user, or summary only?
-- [ ] `rate_limited`: do we implement it?
+- [x] **Message history:** No general message history is stored or replayed on join; clients only see messages received while online. The server only buffers up to 200 unread messages per room while the user is connected so F1 (AI summary) can summarize them.
+- [x] **Unread counts on disconnect:** Dropped on disconnect (`onLeave` deletes `h.unread[c.key]`). Since there is no password authentication, dropping unread state on disconnect prevents a new user who registers a freed name from reading the previous owner's unread summary (R7/R11 privacy).
+- [x] **Mentions (`@name`):** Out of scope; notifications trigger on any incoming DM or group message when the room is not open.
+- [x] **AI scope:** Summary of unread messages only (F1); no separate AI chat bot user.
+- [x] **`rate_limited`:** Implemented — only one in-flight `summarize_request` per client at a time (`c.summarizing`).
 
 ## 6. Team acknowledgement (required before coding against this)
 
 - [ ] P1 acknowledged
-- [ ] P2 acknowledged (keeper)
+- [x] P2 acknowledged (keeper)
 - [ ] P3 acknowledged
 - [ ] P4 acknowledged

@@ -1,38 +1,58 @@
-// Sticker pack (special feature F3). Only the id travels over the WebSocket;
-// the image is a static file served over HTTP from /stickers/<id>.svg.
-// The ids must match server/stickers.go (a Go test checks the files exist).
-// Images are original artwork made for this project.
+// ============================================================================
+// P2 Frontend — งานย่อย 6.3: ระบบเลือกและแสดงผลสติกเกอร์ (stickers.tsx)
+// ครอบคลุมเกณฑ์ Special Feature F3 (Default Stickers):
+//   - รายการรหัสสติกเกอร์ทั้ง 8 ตัวต้องตรงกับ stickerPack ใน server/stickers.go
+//   - ส่งเฉพาะรหัส id ผ่าน WebSocket ส่วนรูปภาพดึงจากไฟล์ Static (/stickers/<id>.svg)
+// ============================================================================
 
-export const STICKER_IDS = [
-  "smile",
-  "laugh",
-  "love",
-  "cry",
-  "angry",
-  "surprised",
-  "sleepy",
-  "thumbs_up",
-] as const;
+export interface StickerDef {
+  id: string;
+  label: string;
+}
 
-export function StickerView({ id, size = 96 }: { id: string; size?: number }) {
-  // The id comes from the server's validated list, but encode it anyway.
+export const STICKERS: readonly StickerDef[] = [
+  { id: "smile", label: "Smile" },
+  { id: "laugh", label: "Laugh" },
+  { id: "love", label: "Love" },
+  { id: "cry", label: "Cry" },
+  { id: "angry", label: "Angry" },
+  { id: "surprised", label: "Surprised" },
+  { id: "sleepy", label: "Sleepy" },
+  { id: "thumbs_up", label: "Thumbs up" },
+];
+
+/** แสดงรูปสติกเกอร์ในหน้าต่างแชท (พร้อมตรวจสอบก่อนว่ามีรหัสอยู่ในระบบจริง) */
+export function StickerView({ id }: { id: string }) {
+  const known = STICKERS.find((s) => s.id === id);
+  if (!known) {
+    return <span className="bubble">[sticker: {id}]</span>;
+  }
   return (
     <img
       className="sticker"
-      src={`/stickers/${encodeURIComponent(id)}.svg`}
-      alt={`sticker: ${id}`}
-      width={size}
-      height={size}
+      src={`/stickers/${known.id}.svg`}
+      alt={known.label}
+      title={known.label}
+      width={96}
+      height={96}
     />
   );
 }
 
-export function StickerPicker({ onPick, disabled }: { onPick: (id: string) => void; disabled?: boolean }) {
+/** แผงปุ่มกดเลือกสติกเกอร์ทั้ง 8 แบบข้างกล่องพิมพ์ข้อความ */
+export function StickerPicker({ onPick }: { onPick: (id: string) => void }) {
   return (
-    <div className="sticker-picker" role="listbox" aria-label="Stickers">
-      {STICKER_IDS.map((id) => (
-        <button key={id} type="button" className="sticker-btn" disabled={disabled} onClick={() => onPick(id)} title={id}>
-          <StickerView id={id} size={44} />
+    <div className="sticker-picker" role="listbox" aria-label="Pick a sticker">
+      {STICKERS.map((s) => (
+        <button
+          key={s.id}
+          type="button"
+          className="sticker-btn"
+          onClick={() => onPick(s.id)}
+          title={s.label}
+          aria-label={`Send ${s.label} sticker`}
+        >
+          <img src={`/stickers/${s.id}.svg`} alt={s.label} width={56} height={56} />
         </button>
       ))}
     </div>
