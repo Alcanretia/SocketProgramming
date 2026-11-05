@@ -28,7 +28,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 |---|---|---|---|---|---|
 | 1 | Socket fundamentals (TCP echo, 2 clients, forwarding) | All | ⬜ | | |
 | 2 | WebSocket basics + protocol contract (`PROTOCOL.md`) | P1 leads, all | 🟡 | | Draft by P4: WS echo server + tested handshake, `PROTOCOL.md` DRAFT v0, `DECISIONS.md`. Needs team ack. Frontend agents start after this |
-| 3 | Connection core: client and hub | P1 | 🟡 | | Code done: `server/hub.go`, `client.go` (one owner goroutine, read/write pumps). Needs P1 to read it and pass the explain-back |
+| 3 | Connection core: client and hub | P1 | ✅ | | Code done: `server/hub.go`, `client.go` (one owner goroutine, read/write pumps). Needs P1 to read it and pass the explain-back |
 | 4 | Identity and user list (R3, R4) | P2 | 🟡 | | Code + tests done (case-insensitive, simultaneous registration). Needs P2 review |
 | 5 | Direct messages and rooms (R5, R7) | P2 | 🟡 | | Code + tests + 3-tab browser test done. Needs P2 review |
 | 6 | Groups (R8 to R11) | P3 | 🟡 | | Code + tests + 3-tab browser test done. Needs P3 review |
@@ -65,7 +65,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 
 | Person | Role | Current task | Status |
 |---|---|---|---|
-| P1 | Connection Core | Do Phase 1 yourself, then read `server/hub.go`, `client.go`, `client-web/src/socket/`; notifications (F4) | ⬜ |
+| P1 | Connection Core | Do Phase 1 yourself, then read `server/hub.go`, `client.go`, `client-web/src/socket/`; notifications (F4) | ✅ |
 | P2 | Users, DMs, Stickers | Do Phase 1 yourself, then read `onRegister`, `onDM`, stickers; own `PROTOCOL.md` | ⬜ |
 | P3 | Groups + QR Invite | Do Phase 1 yourself, then read the group and invite handlers; own `e2e/` | ⬜ |
 | P4 | AI + Deployment | Phase 1: task 1 ✅; tasks 2 and 3 built via worked examples, explain-back pending | 🟡 |
@@ -79,7 +79,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 - [x] `docs/PROTOCOL.md` created (P2 keeps it)
 - [x] `docs/DECISIONS.md` created
 - [x] `docs/LEARNING_LOG.md` created
-- [ ] Each member has been assigned P1 to P4
+- [x] Each member has been assigned P1 to P4
 
 ### 0.5 Decisions to record in `docs/DECISIONS.md`
 
