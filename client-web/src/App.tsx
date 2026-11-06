@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ChatProvider, useChat } from "./socket/store";
 import { ChatRoom } from "./components/shared/ChatRoom";
 import { NotificationSetting } from "./components/shared/NotificationSetting";
@@ -9,14 +10,39 @@ import { InviteJoinDialog } from "./features/groups/InviteJoinDialog";
 import { SummaryCard } from "./features/ai/SummaryCard";
 import { UnreadPanel } from "./features/ai/UnreadPanel";
 
+const TOAST_LIFETIME_MS = 6000; // how long the oldest toast stays before it goes away
+const TOAST_FADE_MS = 400; // the last part of that time is spent fading out (keep in sync with styles.css)
+
 function Toasts() {
   const { state, actions } = useChat();
+  const { toasts } = state;
+  const [fadingId, setFadingId] = useState<number | null>(null);
+
+  // One timer, always for the OLDEST toast: when it expires that toast fades and
+  // is removed, and then the next-oldest gets its own full countdown. A newly
+  // arrived toast changes `newestId`, which restarts the countdown of the oldest
+  // one, so a busy chat keeps its toasts on screen. (Ids only grow, so the newest
+  // id changes exactly when something arrives, or when the newest is clicked away.)
+  const oldestId = toasts.length ? toasts[0].id : null;
+  const newestId = toasts.length ? toasts[toasts.length - 1].id : null;
+  const { dismissToast } = actions;
+  useEffect(() => {
+    setFadingId(null);
+    if (oldestId === null) return;
+    const fade = window.setTimeout(() => setFadingId(oldestId), TOAST_LIFETIME_MS - TOAST_FADE_MS);
+    const remove = window.setTimeout(() => dismissToast(oldestId), TOAST_LIFETIME_MS);
+    return () => {
+      window.clearTimeout(fade);
+      window.clearTimeout(remove);
+    };
+  }, [oldestId, newestId, dismissToast]);
+
   return (
     <div className="toasts" aria-live="polite">
-      {state.toasts.map((t) => (
+      {toasts.map((t) => (
         <div
           key={t.id}
-          className={`toast ${t.kind}`}
+          className={`toast ${t.kind}${t.id === fadingId ? " fading" : ""}`}
           onClick={() => {
             if (t.room) actions.openRoom(t.room);
             actions.dismissToast(t.id);
