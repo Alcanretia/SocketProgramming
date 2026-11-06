@@ -39,6 +39,10 @@ Nothing here is `DECIDED` until P1 to P3 have read it and said so in the table a
 ## D7. Group lifecycle, sticker representation, invite tokens
 - **Status:** PROPOSED in `PROTOCOL.md` (3.3, 3.4, 3.5); implemented.
 - Disconnect removes a user from all groups; an empty group is deleted with its invites. A sticker is `kind: "sticker"` + `stickerId` (id only, images are static files). Invite = 128-bit random token, link `/?invite=<token>`, scanning never joins by itself.
+- Group names are not unique; groups are identified by ID (g_N).
+- Invites are reusable and don’t expire, but die with the group.
+- The token is a link convenience and consistency check, not access control, because R9 and R10 make groups open.
+- There is no auto-rejoin after a reconnect. The alternative considered was client-side rejoin; it was rejected because it touches P1’s store.tsx and only helps with connection drops, not refreshes.
 
 ## D8. LLM provider and model
 - **Status:** PROPOSED (implemented in `server/summary.go`)

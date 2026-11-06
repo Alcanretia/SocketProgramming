@@ -57,7 +57,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 
 **Part 3 (1 point each)**
 - [ ] **F1:** AI text summary on unread chats (P4). Built; the failure path is tested; **the live Claude call has not been run (needs an API key)**
-- [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is not tested
+- [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is tested and passed (2/Nov/2026)
 - [x] **F3:** default stickers (P2)
 - [x] **F4:** notification on received messages (P1). In-app toast/sound/title badge tested; OS notifications need HTTPS or localhost and permission (not tested headless)
 
@@ -67,7 +67,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 |---|---|---|---|
 | P1 | Connection Core | Do Phase 1 yourself, then read `server/hub.go`, `client.go`, `client-web/src/socket/`; notifications (F4) | ⬜ |
 | P2 | Users, DMs, Stickers | Do Phase 1 yourself, then read `onRegister`, `onDM`, stickers; own `PROTOCOL.md` | ⬜ |
-| P3 | Groups + QR Invite | Do Phase 1 yourself, then read the group and invite handlers; own `e2e/` | ⬜ |
+| P3 | Groups + QR Invite | Do Phase 1 yourself, then read the group and invite handlers; own `e2e/` | 🟡 |
 | P4 | AI + Deployment | Phase 1: task 1 ✅; tasks 2 and 3 built via worked examples, explain-back pending | 🟡 |
 
 ### 0.4 Setup checklist
@@ -89,8 +89,8 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 - [ ] Hub concurrency design (channel-owning goroutine vs mutex)
 - [ ] Unread-tracking design and owner (shared by F1 and F4; P1 and P4 agree first)
 - [ ] Sticker representation (new message type or field)
-- [ ] Invite token design (QR payload)
-- [ ] Group lifecycle rules (member disconnects, empty groups, duplicate join)
+- [x] Invite token design (QR payload)
+- [x] Group lifecycle rules (member disconnects, empty groups, duplicate join)
 
 ### 0.6 Session log
 

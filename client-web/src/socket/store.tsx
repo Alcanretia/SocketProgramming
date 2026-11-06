@@ -95,7 +95,8 @@ function reducer(s: State, a: Action): State {
     case "status":
       if (a.status === "open") return { ...s, status: "open" };
       // The server forgets everything about us when the socket closes.
-      return { ...s, status: a.status, me: null, users: [], groups: [], unread: {} };
+      // Invite tokens die with the server's memory too (e.g. a server restart reuses g_1), so drop cached ones.
+      return { ...s, status: a.status, me: null, users: [], groups: [], unread: {}, inviteCreated: {} };
     case "wantName":
       return { ...s, wantedName: a.name, registerError: null };
     case "setActive":
@@ -168,7 +169,8 @@ function onFrame(s: State, f: ServerFrame): State {
     }
     case "error": {
       const p = payload<{ code: string; message: string }>(f);
-      const badInvite = p.code === "bad_invite";
+      // A pending invite is dead if the token is bad, or the group was deleted between "Join group X?" and Join.
+      const badInvite = p.code === "bad_invite" || (s.invitePreview !== null && p.code === "no_such_group");
       return {
         ...s,
         toasts: [...s.toasts.slice(-3), mkToast("error", p.message)],
