@@ -40,6 +40,15 @@ const absent = async (loc, ms = 800) => {
   await sleep(ms);
   return (await loc.count()) === 0;
 };
+// P3: waits until an element that IS on screen goes away (e.g. a deleted group row).
+const gone = async (loc, ms = 4000) => {
+  try {
+    await loc.first().waitFor({ state: "detached", timeout: ms });
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 try {
   // ---- R3 / R4 --------------------------------------------------------
@@ -140,6 +149,57 @@ try {
     await visible(groupRow(alice).locator(".members", { hasText: "Dave" })),
     "group member list now includes Dave",
   );
+
+  // ---- QR invite trap cases (P3) ---------------------------------------------------
+  // Every extra user here closes their tab at the end of their case, so the
+  // "Online (3)" check at the bottom of this script still holds.
+
+  // Case 1: "Not now" must leave the user OUT of the group (R10), and the
+  // same link still works for a second person (invites are reusable, D7).
+  const hana = await join("Hana", link);
+  check(await visible(hana.getByRole("dialog").getByText('Join group "Study"?')), "P3 the reused invite link still shows the dialog (reusable, D7)");
+  await hana.getByRole("dialog").getByRole("button", { name: "Not now" }).click();
+  check(await absent(hana.getByRole("dialog")), "P3 'Not now' closes the dialog");
+  check(
+    await absent(groupRow(alice).locator(".members", { hasText: "Hana" }), 600),
+    "P3 R10 declining did NOT add Hana to the group",
+  );
+  check(await visible(groupRow(hana).getByRole("button", { name: "Join" })), "P3 Hana still sees a plain Join button");
+  await sleep(300);
+  check(!hana.url().includes("invite="), "P3 invite token is removed from the address bar after declining");
+  await hana.context().close();
+
+  // Case 2: a forged token must be rejected with a toast and no dialog.
+  const eve = await join("Eve", `${BASE}/?invite=deadbeef`);
+  check(
+    await visible(eve.locator(".toast.error", { hasText: "invite is invalid" })),
+    "P3 a forged invite token shows a bad_invite error toast",
+  );
+  check(await absent(eve.getByRole("dialog")), "P3 no join dialog for a forged token");
+  await sleep(300);
+  check(!eve.url().includes("invite="), "P3 the forged token is removed from the address bar");
+  await shot(eve, "invite-forged");
+  await eve.context().close();
+
+  // Case 3: the group is deleted (last member leaves) before anyone scans.
+  const frank = await join("Frank");
+  await frank.getByPlaceholder("New group name").fill("Temp");
+  await frank.getByRole("button", { name: "Create" }).click();
+  const tempRow = (page) => page.locator("li.group-item", { hasText: "Temp" });
+  check(await visible(tempRow(alice)), "P3 Alice sees Frank's group Temp");
+  await tempRow(frank).getByRole("button", { name: "Invite (QR)" }).click();
+  await frank.locator(".qr code").waitFor({ timeout: 4000 });
+  const tempLink = (await frank.locator(".qr code").innerText()).trim();
+  await frank.context().close(); // Frank was the only member -> Temp and its invites are deleted
+  check(await gone(tempRow(alice)), "P3 the empty group Temp disappears when its last member leaves");
+
+  const gina = await join("Gina", tempLink);
+  check(
+    await visible(gina.locator(".toast.error", { hasText: "no longer exists" })),
+    "P3 an invite to a deleted group shows a bad_invite error toast",
+  );
+  check(await absent(gina.getByRole("dialog")), "P3 no join dialog for a deleted group");
+  await gina.context().close();
 
   // ---- AI summary (F1): no API key here, so it must fail gracefully -----------
   await carol.locator("aside").getByRole("button", { name: /Alice/ }).first().waitFor().catch(() => {});
