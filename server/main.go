@@ -20,9 +20,11 @@ func main() {
 	dev := flag.Bool("dev", false, "allow WebSocket connections from any origin (Vite dev server only)")
 	flag.Parse()
 
-	summarizer := NewAnthropicSummarizer()
+	summarizer, provider := NewSummarizerFromEnv()
 	if summarizer == nil {
-		log.Println("ANTHROPIC_API_KEY not set: AI summary will answer with an error")
+		log.Println("AI summary disabled:", provider+". It will answer with an error; the rest of the app works.")
+	} else {
+		log.Println("AI summary provider:", provider)
 	}
 
 	hub := NewHub(summarizer, *dev)

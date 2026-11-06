@@ -48,7 +48,7 @@ export function UnreadPanel() {
           );
         })}
       </ul>
-      <p className="muted small">Summaries send the unread messages of that chat to an AI service (Anthropic).</p>
+      <p className="muted small">Summaries send the unread messages of that chat to an external AI service (Google Gemini or Anthropic Claude, depending on how the server is set up).</p>
     </section>
   );
 }
