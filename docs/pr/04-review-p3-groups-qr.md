@@ -2,7 +2,8 @@
 While building the app I (P4) also wrote **your** part with an AI tool, without asking you first: create / list / join groups with member lists, group message fan-out, invite tokens, the group panel, the QR code and the join-confirmation dialog (`server/hub.go`, `client-web/src/features/groups/`). I also wrote the multi-client browser test (`e2e/`) that was yours to write. Sorry; it was not meant to take your part away. It is **not done for you** until you have read it, can explain it, scanned the QR with a real phone, and P2 has reviewed your explanation. The group rules (what happens when a member disconnects, whether empty groups disappear, invite expiry) are my proposals; you decide. Your notes file for this PR: `docs/reviews/p3-groups-qr.md`.
 
 ## What this PR does
-P3's review of the groups and QR-invite code that P4 wrote, plus the follow-up work. **No server or client code changed.**
+P3's review of the groups and QR-invite code that P4 wrote, plus the follow-up work. 
+- Client fix: clear cached invite tokens when the connection drops, and close the join dialog if the group was deleted before Join.
 - Read the group and invite handlers (`onCreateGroup` to `onInviteInfo`, and the group part of `onLeave`) and `client-web/src/features/groups/`.
 - Tested the QR invite with a real phone on the same Wi-Fi, using the LAN address: **passed** (2026-11-02).
 - Added 12 browser checks to `e2e/e2e.mjs` for invite edge cases (table below).
