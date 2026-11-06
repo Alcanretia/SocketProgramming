@@ -45,10 +45,13 @@ Nothing here is `DECIDED` until P1 to P3 have read it and said so in the table a
 - There is no auto-rejoin after a reconnect. The alternative considered was client-side rejoin; it was rejected because it touches P1’s store.tsx and only helps with connection drops, not refreshes.
 
 ## D8. LLM provider and model
-- **Status:** PROPOSED (implemented in `server/summary.go`)
-- Claude via the official Anthropic Go SDK, called from the server over HTTPS. Model defaults to `claude-opus-5-5`, overridable with `LLM_MODEL` (for a cheaper demo, e.g. `claude-haiku-5-5`). The key is read from `ANTHROPIC_API_KEY` in the server environment only. Without a key the app still works and summaries answer with a friendly error.
+- **Status:** PROPOSED (implemented in `server/summary.go` and `server/gemini.go`)
+- Two interchangeable providers behind the one `Summarizer` function type, chosen at startup by `NewSummarizerFromEnv` (`LLM_PROVIDER` forces one; otherwise whichever key exists, Anthropic first).
+  - **Gemini** (added because it has a free tier and the team did not want to pay for an Anthropic API key): plain `net/http` POST to `generateContent` over HTTPS, key in the `x-goog-api-key` header, key from `GEMINI_API_KEY`, model from `GEMINI_MODEL` (default `gemini-3.5-flash-lite`). Google calls `generateContent` "legacy but supported" and now recommends its Interactions API; we kept `generateContent` because its response format is stable and well known. Revisit if it is removed.
+  - **Claude** via the official Anthropic Go SDK. Model defaults to `claude-opus-5-5`, overridable with `LLM_MODEL` (cheaper: `claude-haiku-5-5`). Key from `ANTHROPIC_API_KEY`. This needs a paid API key; a claude.ai subscription does not work for it.
+- Keys are read from the server environment only. Without a key the app still works and summaries answer with a friendly error. Provider errors are logged on the server and never sent to the browser.
 - **Privacy:** only the requesting user's own unread messages of one room are sent, and the UI tells the user that a third party processes them.
-- **Not verified:** no API key was available when this was written, so the live call has never been run; only the plumbing is tested with a fake summarizer.
+- **Not verified:** the live calls have never been run against the real services. The Gemini request/response handling is tested only against a fake HTTP server written from Google's documentation (`server/gemini_test.go`), and the Claude path only through a fake summarizer. Whether the default Gemini model is free for a given key must be checked in AI Studio.
 
 ## D9. Sticker artwork
 - **Status:** PROPOSED (implemented)

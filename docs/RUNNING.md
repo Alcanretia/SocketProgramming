@@ -23,13 +23,29 @@ Flags: `-addr :8080`, `-static ../client-web/dist`, `-dev` (see below).
 
 ## AI summary (special feature F1)
 
+Pick ONE provider. Set the key in the same terminal that starts the server (the server reads environment variables only, not `.env` files). Never commit a key.
+
+**Google Gemini (has a free tier; create a key at https://aistudio.google.com/apikey):**
+
 ```powershell
-$env:ANTHROPIC_API_KEY = "sk-ant-..."     # never commit this; .env is git-ignored
+$env:GEMINI_API_KEY = "AQ...."                 # new AI Studio keys start with AQ. (older ones with AIza); the server does not care
+$env:GEMINI_MODEL = "gemini-3.5-flash-lite"   # optional; this is the default. Check AI Studio for models your key may use
+./chat.exe
+```
+
+**Anthropic Claude (paid API key, not the claude.ai subscription):**
+
+```powershell
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
 $env:LLM_MODEL = "claude-haiku-5-5"       # optional, default claude-opus-5-5
 ./chat.exe
 ```
 
+The startup log says which provider was chosen (`AI summary provider: gemini`). If both keys are set, Anthropic wins unless you set `LLM_PROVIDER=gemini` (or `anthropic`). A failed call is logged on the server (`summary failed: ...`, for example an invalid key or a quota error) while the browser only sees a generic message.
+
 Without a key everything else works and the summary button answers "not available".
+
+Free tiers can have limits and different data-use terms from paid ones, so read Google's current terms before sending real private chats. For the demo, use made-up messages.
 
 ## Frontend development with hot reload
 

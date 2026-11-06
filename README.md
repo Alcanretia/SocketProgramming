@@ -8,16 +8,16 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 
 ## 0. Progress Tracker (update this every session)
 
-> **Last updated:** 2026-10-29
+> **Last updated:** 2026-11-06 (added a Gemini provider for F1 and checked it live)
 > **Current phase:** the whole app (Phases 2 to 7) is **built and auto-tested by P4 with an AI helper**, ahead of the team. Learning/review status is behind the code: nobody has done the explain-backs, and P1 to P3 have not read it yet.
 > **Next up (needs people, in this order; per-person checklists are in `docs/NEXT_STEPS.md`):**
 > 1. Team reads and acknowledges `docs/PROTOCOL.md` (DRAFT v0.1) and `docs/DECISIONS.md` (D1 to D9). Change them if you disagree, then change the code.
 > 2. P1 to P3 do the Phase 1 exercises themselves **before** reading `server/phase1/`, then every member reads `docs/ARCHITECTURE.md` and answers the explain-backs.
-> 3. Provide an `ANTHROPIC_API_KEY` and try the real AI summary once (never run live; only a fake summarizer is tested).
+> 3. ~~Provide an API key and try the real AI summary once~~ Done with Gemini on 2026-11-06 (`docs/RUNNING.md`, `docs/DECISIONS.md` D8). Still to do: set `GEMINI_API_KEY` on the demo computer, and try a group room and Thai text.
 > 4. Phase 8: run on 2+ physical computers and a phone (`docs/RUNNING.md`), including the QR scan and the firewall step.
 > 5. Rehearse with `docs/DEMO_SCRIPT.md`; split reviews so every PR-sized piece gets a non-author reviewer.
 >
-> **Blockers (only people can do these):** API key for F1 live test; physical computers for R1; teammates' acknowledgement and review; instructor-style Q&A rehearsal.
+> **Blockers (only people can do these):** physical computers for R1; teammates' acknowledgement and review; instructor-style Q&A rehearsal.
 > **Open questions:** see `docs/PROTOCOL.md` section 5 (history, unread retention, mentions, AI bot user).
 
 **Legend:** ⬜ not started · 🟡 in progress · ✅ done
@@ -32,7 +32,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | 4 | Identity and user list (R3, R4) | P2 | 🟡 | | Code + tests done (case-insensitive, simultaneous registration). Needs P2 review |
 | 5 | Direct messages and rooms (R5, R7) | P2 | 🟡 | | Code + tests + 3-tab browser test done. Needs P2 review |
 | 6 | Groups (R8 to R11) | P3 | 🟡 | | Code + tests + 3-tab browser test done. Needs P3 review |
-| 7 | Special features (Part 3) | one owner each | 🟡 | | F2, F3, F4 built and tested. F1 built; live Claude call **not** tested (no API key) |
+| 7 | Special features (Part 3) | one owner each | 🟡 | | F2, F3, F4 built and tested. F1 built and checked live with Gemini (2026-11-06); Claude provider not tested |
 | 8 | Multi-computer test + R1 | P1 + P4 | ⬜ | | Blocked: needs 2+ physical computers (see `docs/RUNNING.md`) |
 | 9 | Hardening and rehearsal | All | 🟡 | | Partly: malformed JSON, oversize frame, simultaneous names, slow summary, privacy tests exist. The "trap hunt" and mock Q&A need people |
 
@@ -56,8 +56,13 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 - [x] **R11:** group messages visible only to members
 
 **Part 3 (1 point each)**
+<<<<<<< HEAD
 - [ ] **F1:** AI text summary on unread chats (P4). Built; the failure path is tested; **the live Claude call has not been run (needs an API key)**
 - [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is tested and passed (2/Nov/2026)
+=======
+- [x] **F1:** AI text summary on unread chats (P4). Works live with **Google Gemini** (free tier), checked by hand on 2026-11-06 with two browser tabs (a 3-message DM was summarised correctly). The failure paths are tested automatically. Not yet checked: a group room, Thai text, the Claude provider, and the multi-computer setup
+- [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is not tested
+>>>>>>> 3bdbcb1 (docs: record Gemini provider, live F1 check and updated running guide)
 - [x] **F3:** default stickers (P2)
 - [x] **F4:** notification on received messages (P1). In-app toast/sound/title badge tested; OS notifications need HTTPS or localhost and permission (not tested headless)
 
