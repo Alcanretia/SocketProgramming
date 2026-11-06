@@ -1,10 +1,6 @@
 package main
 
-import (
-	"encoding/json"
-	"strings"
-	"unicode/utf8"
-)
+import "encoding/json"
 
 // Limits from docs/PROTOCOL.md.
 const (
@@ -129,39 +125,4 @@ type groupList struct {
 type errorPayload struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
-}
-
-// validName trims and checks a user or group name.
-func validName(raw string, max int) (string, bool) {
-	s := strings.TrimSpace(raw)
-	n := utf8.RuneCountInString(s)
-	if n < 1 || n > max {
-		return "", false
-	}
-	for _, r := range s {
-		if r < 0x20 || r == 0x7f {
-			return "", false
-		}
-	}
-	return s, true
-}
-
-// validContent checks a text-or-sticker body. The server, not the client,
-// decides what is acceptable (unknown sticker ids are rejected here).
-func validContent(kind, text, stickerID string) (cleanText, code, msg string) {
-	switch kind {
-	case "text":
-		t := strings.TrimSpace(text)
-		if t == "" || utf8.RuneCountInString(t) > maxTextLen {
-			return "", codeBadRequest, "text must be 1 to 1000 characters"
-		}
-		return t, "", ""
-	case "sticker":
-		if !isSticker(stickerID) {
-			return "", codeBadSticker, "unknown sticker id"
-		}
-		return "", "", ""
-	default:
-		return "", codeBadRequest, "kind must be text or sticker"
-	}
 }

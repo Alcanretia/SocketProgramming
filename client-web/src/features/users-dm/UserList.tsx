@@ -1,30 +1,38 @@
 import { useChat } from "../../socket/store";
 import { dmRoomId } from "../../socket/types";
 
-/** Every connected name, including our own (R4). Click another name to open a DM room (R5). */
+// ============================================================================
+// P2 Frontend — งานย่อย 6.2: แถบรายชื่อผู้ใช้ออนไลน์ (UserList.tsx)
+// ครอบคลุมเกณฑ์:
+//   - R4: แสดงรายชื่อผู้ใช้ออนไลน์ทุกคน รวมถึงชื่อของตัวเอง (มีป้าย "(you)")
+//   - R5: เมื่อคลิกที่ชื่อคนอื่น จะคำนวณรหัสห้อง DM ด้วย dmRoomId(me, u) แล้วเปิดห้องแชทนั้น
+//         ส่วนปุ่มชื่อของตัวเองจะถูกล็อก (disabled={isMe}) ไม่ให้กดคุยกับตัวเองได้
+// ============================================================================
+
 export function UserList() {
   const { state, actions } = useChat();
   const me = state.me ?? "";
 
   return (
-    <section>
+    <section className="panel" aria-label="Online users">
       <h2>Online ({state.users.length})</h2>
       <ul className="list">
         {state.users.map((u) => {
           const isMe = u.toLowerCase() === me.toLowerCase();
-          const room = dmRoomId(me, u);
-          const unread = state.unread[room] ?? 0;
+          const room = isMe ? null : dmRoomId(me, u);
+          const unread = room ? (state.unread[room] ?? 0) : 0;
+          const active = room !== null && state.activeRoom === room;
+
           return (
-            <li key={u}>
+            <li key={u.toLowerCase()}>
               <button
-                className={`row ${state.activeRoom === room ? "active" : ""}`}
+                type="button"
+                className={`list-item ${active ? "active" : ""}`}
                 disabled={isMe}
-                onClick={() => actions.openRoom(room)}
+                onClick={() => room && actions.openRoom(room)}
               >
-                <span className="dot" />
-                <span className="grow">
-                  {u}
-                  {isMe && <em className="muted"> (you)</em>}
+                <span>
+                  {u} {isMe && <em className="muted">(you)</em>}
                 </span>
                 {unread > 0 && <span className="badge">{unread}</span>}
               </button>
