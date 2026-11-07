@@ -12,4 +12,4 @@ npm test
 ```
 
 `BASE_URL` (default `http://localhost:8080`) can point at another machine. Screenshots go to `e2e/shots/`.
-Run it against a server **without** `ANTHROPIC_API_KEY` (one check expects the friendly "AI not available" error).
+Run it against a server **without** `GEMINI_API_KEY` (one check expects the friendly "AI not available" error).

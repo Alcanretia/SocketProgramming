@@ -1,6 +1,6 @@
 # DEMO_SCRIPT (draft, ~10 minutes)
 
-Setup: server on laptop A (run from a built `chat.exe`, LAN address noted, firewall allowed). Laptop B and C (or a phone) on the same Wi-Fi. `GEMINI_API_KEY` (or `ANTHROPIC_API_KEY`) set on A. Three browser windows visible: Alice (A), Bob (B), Carol (C). Open the app on A via the LAN address, not `localhost`.
+Setup: server on laptop A (run from a built `chat.exe`, LAN address noted, firewall allowed). Laptop B and C (or a phone) on the same Wi-Fi. `GEMINI_API_KEY` set on A. Three browser windows visible: Alice (A), Bob (B), Carol (C). Open the app on A via the LAN address, not `localhost`.
 
 | # | Show | Say / point at | Rubric |
 |---|---|---|---|
@@ -13,7 +13,7 @@ Setup: server on laptop A (run from a built `chat.exe`, LAN address noted, firew
 | 7 | Sticker in a DM and in the group | "Only `stickerId` crosses the socket." Show the frame in DevTools. | F3 |
 | 8 | Alice shows the QR; phone scans it | Phone opens the app, picks a name, sees "Join group Study?", presses Join. Scanning alone did not add anyone. | F2, R10 |
 | 9 | Carol is on another room; Alice messages her | Toast + sound + tab badge; unread count in the list. Mention the secure-context limit and the fallback. | F4 |
-| 10 | Carol presses "Summarize" on the unread chat | Summary appears. Trace: browser → WebSocket → server → HTTPS → Gemini/Claude → back. Mention third-party disclosure. | F1 |
+| 10 | Carol presses "Summarize" on the unread chat | Summary appears. Trace: browser → WebSocket → server → HTTPS → Gemini → back. Mention third-party disclosure. | F1 |
 | 11 | Stop the API key / unplug network, ask again | Friendly error, chat still works. | F1 |
 | 12 | Close Bob's laptop lid / kill a tab | User list updates, group member list updates, no crash. | robustness |
 

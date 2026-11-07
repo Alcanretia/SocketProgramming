@@ -117,45 +117,26 @@ func TestGeminiSummarizerTimeoutKeepsDeadlineError(t *testing.T) {
 	}
 }
 
-func TestProviderSelection(t *testing.T) {
+func TestGeminiKeyFromEnvironment(t *testing.T) {
 	clear := func() {
-		for _, k := range []string{"LLM_PROVIDER", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "GEMINI_API_KEY", "GOOGLE_API_KEY"} {
-			t.Setenv(k, "")
-		}
+		t.Setenv("GEMINI_API_KEY", "")
+		t.Setenv("GOOGLE_API_KEY", "")
 	}
 
 	clear()
-	if s, why := NewSummarizerFromEnv(); s != nil || why == "" {
-		t.Fatalf("no key: want nil + reason, got %v %q", s != nil, why)
+	if NewGeminiSummarizer() != nil {
+		t.Fatal("no key: the summarizer must be nil so the server runs without AI")
 	}
 
 	clear()
 	t.Setenv("GEMINI_API_KEY", "x")
-	if s, name := NewSummarizerFromEnv(); s == nil || name != "gemini" {
-		t.Fatalf("gemini key only: got %v %q", s != nil, name)
+	if NewGeminiSummarizer() == nil {
+		t.Fatal("GEMINI_API_KEY should enable the summarizer")
 	}
 
 	clear()
 	t.Setenv("GOOGLE_API_KEY", "x")
-	if _, name := NewSummarizerFromEnv(); name != "gemini" {
-		t.Fatalf("GOOGLE_API_KEY should select gemini, got %q", name)
-	}
-
-	clear()
-	t.Setenv("GEMINI_API_KEY", "x")
-	t.Setenv("ANTHROPIC_API_KEY", "x")
-	if _, name := NewSummarizerFromEnv(); name != "anthropic" {
-		t.Fatalf("both keys, no override: anthropic wins, got %q", name)
-	}
-	t.Setenv("LLM_PROVIDER", "gemini")
-	if _, name := NewSummarizerFromEnv(); name != "gemini" {
-		t.Fatalf("LLM_PROVIDER=gemini must win, got %q", name)
-	}
-
-	clear()
-	t.Setenv("LLM_PROVIDER", "gemini")
-	t.Setenv("ANTHROPIC_API_KEY", "x") // wrong provider's key must not be used
-	if s, why := NewSummarizerFromEnv(); s != nil || !strings.Contains(why, "GEMINI_API_KEY") {
-		t.Fatalf("forced gemini without its key: got %v %q", s != nil, why)
+	if NewGeminiSummarizer() == nil {
+		t.Fatal("GOOGLE_API_KEY should also enable the summarizer")
 	}
 }

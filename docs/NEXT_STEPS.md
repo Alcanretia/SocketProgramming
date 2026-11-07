@@ -39,14 +39,14 @@ Commit your learning-log entry, your fixes and your review notes on your branch,
 
 ## P4: AI, deployment, slides, demo
 - [ ] Explain-backs still owed from Phase 1 (`go` removal, why the mutex in `phase1/hub`, TCP lifecycle) and Phase 2 (HTTP vs WebSocket).
-- [ ] Get an `ANTHROPIC_API_KEY` and run the **real** summary once (`docs/RUNNING.md`). It has never run live. Check the cost and decide on `LLM_MODEL`.
+- [ ] A real Gemini summary was tried once (a DM). Set `GEMINI_API_KEY` on the demo computer and also try a group room and Thai text (`docs/RUNNING.md`).
 - [ ] Read `server/summary.go` and `onSummarize`. Explain-back: *trace one summary from trigger to screen, naming the protocol at each hop*; *what must not block*; *what is sent to the third party*.
 - [ ] Phase 8 (R1): run the server on one laptop and connect from two other physical computers and a phone. Fix firewall/IP problems. Optional: cloud deploy with `wss://`.
 - [ ] Rehearse `docs/DEMO_SCRIPT.md` with a timer.
 - [ ] Review P1's part.
 
 ## Known gaps (not anyone's fault, but must be known)
-- Live Claude call never executed (no key). Real phone scan and OS notifications never executed (headless test only).
+- Live Gemini call tried once (a DM); group rooms and Thai text not tried. Real phone scan and OS notifications never executed (headless test only).
 - No message history; state is lost on disconnect; no authentication.
 - `go test -race` could not run on the first machine (needs a 64-bit C compiler).
 - There is no CI. Run `cd server && go test ./...` and `cd client-web && npm run build` before every PR.

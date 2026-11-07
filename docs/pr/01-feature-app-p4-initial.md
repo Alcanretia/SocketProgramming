@@ -52,7 +52,7 @@ It is bigger than the "under ~200 lines" rule on purpose: it is the baseline eve
 - [x] README Section 0 updated
 
 ## Not verified (please do not assume these work)
-- The live Claude call (no API key was available; only a fake summarizer is tested).
+- The live AI call when this PR was written (no API key was available; only a fake summarizer was tested). A later change switched the provider to Google Gemini and tried it once by hand.
 - A real phone scanning the QR code; OS-level notifications (browsers need HTTPS or localhost plus permission).
 - `go test -race` (no 64-bit C compiler on the first machine).
 

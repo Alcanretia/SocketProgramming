@@ -24,7 +24,7 @@ P4's learning, live-test and deployment changes: <!-- e.g. explain-back answers 
 
 ## Checks
 - [ ] `cd server; go test ./...` passes
-- [ ] **Real AI summary run once** with `ANTHROPIC_API_KEY` (result and cost noted; model chosen via `LLM_MODEL`)
+- [ ] **Real AI summary run once** with `GEMINI_API_KEY` (result noted; model chosen via `GEMINI_MODEL`)
 - [ ] Phase 8: server on one laptop, two other physical computers and a phone connected; firewall and IP steps worked
 - [ ] `docs/DEMO_SCRIPT.md` rehearsed with a timer
 - [ ] Learning-log entry added

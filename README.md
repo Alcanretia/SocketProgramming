@@ -32,7 +32,7 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 | 4 | Identity and user list (R3, R4) | P2 | 🟡 | | Code + tests done (case-insensitive, simultaneous registration). Needs P2 review |
 | 5 | Direct messages and rooms (R5, R7) | P2 | 🟡 | | Code + tests + 3-tab browser test done. Needs P2 review |
 | 6 | Groups (R8 to R11) | P3 | 🟡 | | Code + tests + 3-tab browser test done. Needs P3 review |
-| 7 | Special features (Part 3) | one owner each | 🟡 | | F2, F3, F4 built and tested. F1 built and checked live with Gemini (2026-11-06); Claude provider not tested |
+| 7 | Special features (Part 3) | one owner each | 🟡 | | F2, F3, F4 built and tested. F1 built with Google Gemini and checked live (2026-11-06) |
 | 8 | Multi-computer test + R1 | P1 + P4 | ⬜ | | Blocked: needs 2+ physical computers (see `docs/RUNNING.md`) |
 | 9 | Hardening and rehearsal | All | 🟡 | | Partly: malformed JSON, oversize frame, simultaneous names, slow summary, privacy tests exist. The "trap hunt" and mock Q&A need people |
 
@@ -56,13 +56,8 @@ A learning-first plan for a team of 4, **written so each teammate can hand this 
 - [x] **R11:** group messages visible only to members
 
 **Part 3 (1 point each)**
-<<<<<<< HEAD
-- [ ] **F1:** AI text summary on unread chats (P4). Built; the failure path is tested; **the live Claude call has not been run (needs an API key)**
+- [x] **F1:** AI text summary on unread chats (P4). Works live with **Google Gemini** (free tier), checked by hand on 2026-11-06 with two browser tabs (a 3-message DM was summarised correctly). The failure paths are tested automatically. Not yet checked: a group room, Thai text, and the multi-computer setup
 - [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is tested and passed (2/Nov/2026)
-=======
-- [x] **F1:** AI text summary on unread chats (P4). Works live with **Google Gemini** (free tier), checked by hand on 2026-11-06 with two browser tabs (a 3-message DM was summarised correctly). The failure paths are tested automatically. Not yet checked: a group room, Thai text, the Claude provider, and the multi-computer setup
-- [x] **F2:** QR code group invitation (P3). Scan flow tested via the invite link; a real phone camera scan is not tested
->>>>>>> 3bdbcb1 (docs: record Gemini provider, live F1 check and updated running guide)
 - [x] **F3:** default stickers (P2)
 - [x] **F4:** notification on received messages (P1). In-app toast/sound/title badge tested; OS notifications need HTTPS or localhost and permission (not tested headless)
 
@@ -114,7 +109,7 @@ P4 built the whole first version with an AI tool, so **code in your area already
 | **P1** Connection core | Hub (one owner goroutine + event channel), per-client read/write pumps, slow-client drop, ping/pong, size limit, WebSocket upgrade; browser connection with reconnect and re-register, state store, notification service with in-app fallback, shared `ChatRoom`, `NotificationSetting`, `roomInfo` | `server/hub.go`, `server/client.go`, `server/main.go`, `client-web/src/socket/`, `client-web/src/components/shared/` | Do Phase 1 and 2 yourself, read these files, pass the Phase 3 explain-back, test OS notifications |
 | **P2** Users, DMs, stickers | Name validation and uniqueness, `user_list` broadcast, DM routing and room ids, sticker validation and the 8 original SVG stickers, name screen, user list, sticker picker. **Also wrote `docs/PROTOCOL.md` (you are the keeper)** | `onRegister`, `onDM`, `validContent` in `server/hub.go` and `server/protocol.go`, `server/stickers.go`, `client-web/src/features/users-dm/`, `client-web/public/stickers/`, `docs/PROTOCOL.md` | Read, answer the open questions in `PROTOCOL.md` section 5, acknowledge or change it, pass the Phase 4 and 5 explain-backs |
 | **P3** Groups, QR | Create / list / join groups with member lists, group fan-out, disconnect rules, invite tokens and `invite_info`, group panel, QR code, join-confirmation dialog. **Also wrote `e2e/` (your "multi-client test script")** | `onCreateGroup` to `onInviteInfo` in `server/hub.go`, `client-web/src/features/groups/`, `e2e/` | Read, decide the group rules, scan the QR with a real phone, extend `e2e/`, pass the Phase 6 explain-back |
-| **P4** (own scope) | AI summary (Anthropic SDK call, timeout, graceful errors), unread list and summary card, running guide, demo script, architecture doc | `server/summary.go`, `client-web/src/features/ai/`, `docs/RUNNING.md`, `docs/DEMO_SCRIPT.md`, `docs/ARCHITECTURE.md` | Live-test with an API key, multi-computer run, slides, explain-backs |
+| **P4** (own scope) | AI summary (Google Gemini call, timeout, graceful errors), unread list and summary card, running guide, demo script, architecture doc | `server/summary.go`, `client-web/src/features/ai/`, `docs/RUNNING.md`, `docs/DEMO_SCRIPT.md`, `docs/ARCHITECTURE.md` | Live-test with an API key, multi-computer run, slides, explain-backs |
 | **Shared** | Tests for R3 to R11, stickers, invites, unread and summary failures; `.gitignore`; Go module; decisions D1 to D9; per-person checklist; PR templates | `server/hub_test.go`, `.gitignore`, `server/go.mod`, `docs/DECISIONS.md`, `docs/NEXT_STEPS.md`, `.github/`, `docs/pr/` | Everyone: acknowledge decisions D1 to D9 |
 
 **Decisions made for the team that you may overturn:** D1 to D9 in `docs/DECISIONS.md`. Two of them were supposed to be agreed first: D4 (hub concurrency design, P1 owns it) and D5 (unread tracking, P1 and P4 agree).
@@ -487,7 +482,7 @@ Each phase lists: **Goal**, **Concepts**, **Guiding questions**, **Hints** (dire
 
 > Start only after R3 to R11 pass. All four are worth 1 point each. Unread tracking is shared by F1 and F4: **P1 and P4 agree on it first** (see Phase 2 decision).
 
-**Status:** 🟡 F1 to F4 all built (not by their listed owners); F1 live Claude call untested; review and explain-backs pending
+**Status:** 🟡 F1 to F4 all built (not by their listed owners); F1 checked live with Gemini (one DM only); review and explain-backs pending
 
 #### F1: AI text summary triggered on unread chats (P4)
 
