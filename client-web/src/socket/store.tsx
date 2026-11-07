@@ -55,6 +55,10 @@ type Action =
   | { t: "summaryDismiss"; room: string }
   | { t: "inviteClear" };
 
+/** At most this many toasts are on screen; a new one pushes the oldest out. */
+export const MAX_TOASTS = 4;
+const withToast = (list: Toast[], t: Toast): Toast[] => [...list.slice(-(MAX_TOASTS - 1)), t];
+
 let toastSeq = 0;
 const mkToast = (kind: Toast["kind"], text: string, room?: string): Toast => ({
   id: ++toastSeq,
@@ -102,7 +106,7 @@ function reducer(s: State, a: Action): State {
     case "setActive":
       return { ...s, activeRoom: a.room };
     case "toast":
-      return { ...s, toasts: [...s.toasts.slice(-3), a.toast] };
+      return { ...s, toasts: withToast(s.toasts, a.toast) };
     case "dismissToast":
       return { ...s, toasts: s.toasts.filter((t) => t.id !== a.id) };
     case "summaryLoading":
@@ -173,7 +177,7 @@ function onFrame(s: State, f: ServerFrame): State {
       const badInvite = p.code === "bad_invite" || (s.invitePreview !== null && p.code === "no_such_group");
       return {
         ...s,
-        toasts: [...s.toasts.slice(-3), mkToast("error", p.message)],
+        toasts: withToast(s.toasts, mkToast("error", p.message)),
         inviteToken: badInvite ? null : s.inviteToken,
         invitePreview: badInvite ? null : s.invitePreview,
       };

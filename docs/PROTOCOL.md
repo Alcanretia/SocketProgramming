@@ -128,7 +128,7 @@ Decisions baked into this draft (change them if the team disagrees)
 
 - The server builds the input **only from messages the requester is allowed to see** (member of the group, party to the DM) and only the unread ones, capped to the most recent N (N to be decided; a first guess is 200).
 - The LLM call runs in its own goroutine with a 25 s timeout; it must not block the read loop or the hub. Only one summary per user can be in flight: a second request gets `error` with `code: "rate_limited"`.
-- If `ANTHROPIC_API_KEY` is not set on the server, the answer is `summary_error` with `code: "llm_error"` (the rest of the app works without AI).
+- If `GEMINI_API_KEY` is not set on the server, the answer is `summary_error` with `code: "llm_error"` (the rest of the app works without AI).
 - Sticker messages appear in the LLM input as `[sticker: <id>]`; message text is wrapped as untrusted data in the prompt.
 - The API key is a server environment variable only.
 

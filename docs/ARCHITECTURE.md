@@ -16,7 +16,7 @@ flowchart LR
     HTTP["http.FileServer"]
     WS["/ws: Upgrade (HTTP 101)"] --> RP["readPump / writePump<br/>per client"]
     RP <-- "events channel" --> Hub["Hub goroutine<br/>owns ALL state"]
-    Hub -- "own goroutine, 25 s timeout" --> LLM["Claude API (HTTPS)"]
+    Hub -- "own goroutine, 25 s timeout" --> LLM["Google Gemini API (HTTPS)"]
   end
 ```
 
@@ -66,7 +66,7 @@ flowchart LR
 - **Stickers (F3):** `kind:"sticker"` + `stickerId`. The server validates the id against `stickerPack` (`validContent`). Only the id crosses the socket; SVGs are static assets, so R2 holds. What travels: `{"type":"dm","payload":{"to":"bob","kind":"sticker","stickerId":"love"}}`.
 - **QR invite (F2):** `create_invite` (members only) → 128-bit token → link `/?invite=<token>` → QR drawn in the browser (`features/groups/InviteQr.tsx`). Opening the link registers a name if needed, sends `invite_info`, and shows "Join group X?". Joining sends `join_group` with the token.
 - **Notifications (F4):** the **server** only delivers the message and counts unread. The **browser** decides how to alert: in-app toast + sound + title badge always; OS notification (`Notification` API) only when the tab is hidden, permission was granted and the page is a secure context. Over `http://<LAN-IP>` the API is unavailable, so the fallback is what the demo shows. Options to get real notifications on a demo: use `localhost` on the presenter's machine, or serve HTTPS (cloud deploy, tunnel, or a local dev certificate).
-- **AI summary (F1):** client sends `summarize_request` over the socket → hub builds lines from this user's unread messages of that room → goroutine calls Claude over HTTPS with a timeout → `summary_result` / `summary_error` returns over the same socket. Trace for the explain-back: *Browser →(WebSocket/TCP)→ Go server →(HTTPS/TCP, DNS to find the API host)→ Claude API, and back the same way.*
+- **AI summary (F1):** client sends `summarize_request` over the socket → hub builds lines from this user's unread messages of that room → goroutine calls the Google Gemini API over HTTPS with a timeout → `summary_result` / `summary_error` returns over the same socket. Trace for the explain-back: *Browser →(WebSocket/TCP)→ Go server →(HTTPS/TCP, DNS to find the API host)→ Gemini API, and back the same way.*
 
 ## 6. Protocols used (R1)
 
@@ -79,4 +79,4 @@ See README section 7 for the full table and the rejected alternatives (UDP, Sock
 - No authentication: a name is just whoever claimed it first while connected.
 - Single server process, state in memory.
 - `go test -race` was not run (no suitable C compiler on the first machine).
-- The live Claude call was not exercised without an API key.
+- The live Gemini call was tried by hand once (a 3-message DM). Group rooms and Thai text are not checked; the automated tests use a fake Gemini server.

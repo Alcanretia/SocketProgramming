@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"sort"
 	"strings"
@@ -517,6 +518,7 @@ func (h *Hub) onSummaryDone(e summaryDone) {
 		return
 	}
 	if e.err != nil {
+		log.Println("summary failed:", e.err) // detail stays on the server; the client gets a generic message
 		code, msg := "llm_error", "the AI service failed, try again later"
 		switch {
 		case errors.Is(e.err, context.DeadlineExceeded):

@@ -364,6 +364,10 @@ button.icon {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   cursor: pointer;
   overflow-wrap: anywhere;
+  transition: opacity 0.4s ease; /* TOAST_FADE_MS in App.tsx */
+}
+.toast.fading {
+  opacity: 0;
 }
 .toast.error {
   border-left-color: var(--danger);

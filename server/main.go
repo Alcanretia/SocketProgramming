@@ -20,9 +20,11 @@ func main() {
 	dev := flag.Bool("dev", false, "allow WebSocket connections from any origin (Vite dev server only)")
 	flag.Parse()
 
-	summarizer := NewAnthropicSummarizer()
+	summarizer := NewGeminiSummarizer()
 	if summarizer == nil {
-		log.Println("ANTHROPIC_API_KEY not set: AI summary will answer with an error")
+		log.Println("GEMINI_API_KEY not set: AI summary will answer with an error (the rest of the app works)")
+	} else {
+		log.Println("AI summary: Google Gemini")
 	}
 
 	hub := NewHub(summarizer, *dev)
